@@ -25,11 +25,11 @@
         vpc_id: "{{vpcout.vpc.id}}"
         cidr: "{{PubSub1Cidr}}"
         region: "{{region}}"
-        az: "{{zone1}}" 
+        az: "{{zone1}}"
         map_public: yes
         resource_tags:
           Name: vprofile-Pubsub1
-      register: pubsub1_out 
+      register: pubsub1_out
 
     - name: Create subnet for database servers
       amazon.aws.ec2_vpc_subnet:
@@ -37,18 +37,18 @@
         vpc_id: "{{vpcout.vpc.id}}"
         cidr: "{{PubSub2Cidr}}"
         region: "{{region}}"
-        az: "{{zone2}}" 
+        az: "{{zone2}}"
         map_public: yes
         resource_tags:
           Name: vprofile-Pubsub2
-      register: pubsub2_out 
+      register: pubsub2_out
     - name: Create subnet for database servers
       amazon.aws.ec2_vpc_subnet:
         state: "{{state}}"
         vpc_id: "{{vpcout.vpc.id}}"
         cidr: "{{PubSub3Cidr}}"
         region: "{{region}}"
-        az: "{{zone3}}" 
+        az: "{{zone3}}"
         map_public: yes
         resource_tags:
           Name: vprofile-Pubsub3
@@ -59,32 +59,39 @@
         vpc_id: "{{vpcout.vpc.id}}"
         cidr: "{{PrivSub4Cidr}}"
         region: "{{region}}"
-        az: "{{zone1}}" 
+        az: "{{zone1}}"
         map_public: yes
         resource_tags:
           Name: vprofile-Privsub1
-      register: privsub1_out      
-    
+      register: privsub1_out
+
     - name: Create subnet for database servers
       amazon.aws.ec2_vpc_subnet:
         state: "{{state}}"
         vpc_id: "{{vpcout.vpc.id}}"
         cidr: "{{PrivSub5Cidr}}"
         region: "{{region}}"
-        az: "{{zone2}}" 
+        az: "{{zone2}}"
         map_public: yes
         resource_tags:
           Name: vprofile-Privsub2
-      register: privsub2_out 
+      register: privsub2_out
     - name: Create subnet for database servers
       amazon.aws.ec2_vpc_subnet:
         state: "{{state}}"
         vpc_id: "{{vpcout.vpc.id}}"
         cidr: "{{PrivSub6Cidr}}"
         region: "{{region}}"
-        az: "{{zone3}}" 
+        az: "{{zone3}}"
         map_public: yes
         resource_tags:
           Name: vprofile-Privsub3
-      register: privsub3_out   
+      register: privsub3_out
 
+    - name: Create Internet gateway
+      amazon.aws.ec2_vpc_igw:
+        vpc_id: "{{vpcout.vpc.id}}"
+        state: "{{state}}"
+        resource_tags:
+          Name: vprofile-igw
+      register: igw_out
