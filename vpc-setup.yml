@@ -29,4 +29,4 @@
       register: pubsub1_out 
 
     - debug:
-       var: vpcout
+        var: vpcout,pubsub1_out
