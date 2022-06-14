@@ -62,7 +62,7 @@
         az: "{{zone1}}" 
         map_public: yes
         resource_tags:
-          Name: vprofile-Pubsub1
+          Name: vprofile-Privsub1
       register: privsub1_out      
     
     - name: Create subnet for database servers
