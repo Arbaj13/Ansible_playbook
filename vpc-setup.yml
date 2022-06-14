@@ -16,6 +16,9 @@
         tenancy: default
         state: "{{state}}"
       register: vpcout
+    - debug:
+        var: vpcout
+
     - name: Create subnet for database servers
       amazon.aws.ec2_vpc_subnet:
         state: "{{state}}"
@@ -28,5 +31,60 @@
           Name: vprofile-Pubsub1
       register: pubsub1_out 
 
-    - debug:
-        var: vpcout,pubsub1_out
+    - name: Create subnet for database servers
+      amazon.aws.ec2_vpc_subnet:
+        state: "{{state}}"
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{PubSub2Cidr}}"
+        region: "{{region}}"
+        az: "{{zone2}}" 
+        map_public: yes
+        resource_tags:
+          Name: vprofile-Pubsub2
+      register: pubsub2_out 
+    - name: Create subnet for database servers
+      amazon.aws.ec2_vpc_subnet:
+        state: "{{state}}"
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{PubSub3Cidr}}"
+        region: "{{region}}"
+        az: "{{zone3}}" 
+        map_public: yes
+        resource_tags:
+          Name: vprofile-Pubsub3
+      register: pubsub3_out
+    - name: Create subnet for database servers
+      amazon.aws.ec2_vpc_subnet:
+        state: "{{state}}"
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{PrivSub4Cidr}}"
+        region: "{{region}}"
+        az: "{{zone1}}" 
+        map_public: yes
+        resource_tags:
+          Name: vprofile-Pubsub1
+      register: privsub1_out      
+    
+    - name: Create subnet for database servers
+      amazon.aws.ec2_vpc_subnet:
+        state: "{{state}}"
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{PrivSub5Cidr}}"
+        region: "{{region}}"
+        az: "{{zone2}}" 
+        map_public: yes
+        resource_tags:
+          Name: vprofile-Privsub2
+      register: privsub2_out 
+    - name: Create subnet for database servers
+      amazon.aws.ec2_vpc_subnet:
+        state: "{{state}}"
+        vpc_id: "{{vpcout.vpc.id}}"
+        cidr: "{{PrivSub6Cidr}}"
+        region: "{{region}}"
+        az: "{{zone3}}" 
+        map_public: yes
+        resource_tags:
+          Name: vprofile-Privsub3
+      register: privsub3_out   
+
