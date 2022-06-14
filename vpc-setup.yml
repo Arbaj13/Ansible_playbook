@@ -4,7 +4,7 @@
   gather_facts: False
   tasks:
     - name: Import VPC variables
-      include_vars: vars/vpc-setup
+      include_vars: vars/vpc_setup
 
     - name: create a VPC for Vprofile
       amazon.aws.ec2_vpc_net:
