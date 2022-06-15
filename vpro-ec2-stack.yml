@@ -22,31 +22,29 @@
     - name: Create securiy groups for ELB
       ec2_group:
         name: vpro_ELB
-        description: Allow port 80 from all port 
+        description: Allow port 80 from all port
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
         rule:
-         - proto: tcp
-           from_port: 80
-           to_port: 80
-           cidr_ip: 0.0.0.0/0
-      register: vproELB-SG
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+      register: vproELB_SG
     - name: Create securiy groups for Vprofile Stack
       ec2_group:
         name: vpro_SG
-        description: Allow port 22 from all port 
+        description: Allow port 22 from all port
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
         purge_rules: no
         rule:
-         - proto: tcp
-           from_port: 80
-           to_port: 80
-           group_id: "{{vproELB-SG.group_id}}"
-         - proto: tcp
-           from_port: 22
-           to_port: 22
-           group_id: "{{bastionSG}}" 
-      register: vprostackSG_out      
-
-
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            group_id: "{{vproELB-SG.group_id}}"
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            group_id: "{{bastionSG}}"
+      register: vprostackSG_out
