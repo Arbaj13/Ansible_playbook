@@ -20,4 +20,9 @@ zone3: ap-south-1c
 
 state: present
 
+bastion_ami: ami-068257025f72f470d
+
+MYIP: 0.0.0.0/0
+
+
 
