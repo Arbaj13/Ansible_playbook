@@ -20,7 +20,7 @@
         mode: 0600
       when: vprokey_out.changed
     - name: Create securiy groups for ELB
-      ec2_group:
+      amazon.aws.ec2_group:
         name: vpro_ELB
         description: Allow port 80 from all port
         region: "{{region}}"
@@ -32,7 +32,7 @@
             cidr_ip: 0.0.0.0/0
       register: vproELB_SG
     - name: Create securiy groups for Vprofile Stack
-      ec2_group:
+      amazon.aws.ec2_group:
         name: vpro_SG
         description: Allow port 22 from all port
         region: "{{region}}"
