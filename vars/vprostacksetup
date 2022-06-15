@@ -4,3 +4,4 @@ memcache_ami: ami-068257025f72f470d
 rmq_ami: ami-068257025f72f470d
 mysql_ami: ami-068257025f72f470d
 region: ap-south-1
+bastionSG: sg-081b39197e569e2f9`
