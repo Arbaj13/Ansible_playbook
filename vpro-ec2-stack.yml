@@ -184,7 +184,7 @@
 
     - name: Copy login key to provision_stack directory
       copy:
-        src: loginkey_vpro.pem
+        src: vprokey.pem
         dest: provision-stack/vprokey.pem
         mode: '0400'
 
