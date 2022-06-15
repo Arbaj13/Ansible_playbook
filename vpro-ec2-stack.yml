@@ -71,7 +71,7 @@
         group_id: "{{vproStackSG_out.group_id}}"
         vpc_subnet_id: "{{privsub1id}}"
       register: web01_out
-    - name: Creating tomcat app01 
+    - name: Creating tomcat app01
       ec2:
         key_name: vprokey
         region: "{{region}}"
@@ -90,8 +90,8 @@
           Owner: DevOps Team
         group_id: "{{vproStackSG_out.group_id}}"
         vpc_subnet_id: "{{privsub1id}}"
-      register: app01_out      
-    - name: Creating memcache mc01 
+      register: app01_out
+    - name: Creating memcache mc01
       ec2:
         key_name: vprokey
         region: "{{region}}"
@@ -111,7 +111,7 @@
         group_id: "{{vproStackSG_out.group_id}}"
         vpc_subnet_id: "{{privsub1id}}"
       register: mc01_out
-    - name: Creating Rabbitmq mq01 
+    - name: Creating Rabbitmq mq01
       ec2:
         key_name: vprokey
         region: "{{region}}"
@@ -131,7 +131,7 @@
         group_id: "{{vproStackSG_out.group_id}}"
         vpc_subnet_id: "{{privsub1id}}"
       register: mq01_out
-    - name: Creating Mysql db01 
+    - name: Creating Mysql db01
       ec2:
         key_name: vprokey
         region: "{{region}}"
@@ -151,6 +151,81 @@
         group_id: "{{vproStackSG_out.group_id}}"
         vpc_subnet_id: "{{privsub1id}}"
       register: db01_out
-      
-    - debug: 
-        var: db01_out
+
+    - debug:
+        var: db01_out.tagged_instances[0].id
+
+    - local_action:
+        module: ec2_elb_lb
+        name: "vprofile-elb"
+        region: "{{region}}"
+        state: present
+        instance_ids:
+          - "{{web01_out.tagged_instances[0].id}}"
+        purge_instance_ids: true
+        security_group_ids: "{{vproStackSG_out.group_id}}"
+        subnets:
+          - "{{pubsub1id}}"
+          - "{{pubsub2id}}"
+          - "{{pubsub3id}}"
+        listeners:
+          - portocol: http
+            load_balancer_port: 80
+            instance_port: 80
+    - name: Insert/Update Hosts IP & Name in file provision-stack/group_vars/hostsip
+      blockinfile:
+        path: provision-stack/group_vars/hostsip
+        block: |
+          web01_ip: {{ web01_out.tagged_instances[0].private_ip }}
+          app01_ip: {{ app01_out.tagged_instances[0].private_ip }}
+          mq01_ip: {{ mq01_out.tagged_instances[0].private_ip }}
+          mc01_ip: {{ mc01_out.tagged_instances[0].private_ip }}
+          db01_ip: {{ db01_out.tagged_instances[0].private_ip }}
+
+    - name: Copy login key to provision_stack directory
+      copy:
+        src: loginkey_vpro.pem
+        dest: provision-stack/vprokey.pem
+        mode: '0400'
+
+    - name: Insert/Update Inventory file provision-stack/inventory-vpro
+      blockinfile:
+        path: provision-stack/inventory-vpro
+        block: |
+          web01 ansible_host={{ web01_out.tagged_instances[0].private_ip }}
+          app01 ansible_host={{ app01_out.tagged_instances[0].private_ip }}
+          rmq01 ansible_host={{ mq01_out.tagged_instances[0].private_ip }}
+          mc01 ansible_host={{ mc01_out.tagged_instances[0].private_ip }}
+          db01 ansible_host={{ db01_out.tagged_instances[0].private_ip }}
+          cntl ansible_host=127.0.0.1 ansible_connection=local
+
+          [websrvgrp]
+          web01
+
+          [appsrvgrp]
+          app01
+
+          [mqsrvgrp]
+          mq01
+
+          [mcsrvgrp]
+          mc01
+
+          [dbsrvgrp]
+          db01
+
+          [control]
+          cntl
+
+          [stack_inst:children]
+          websrvgrp
+          appsrvgrp
+          mqsrvgrp
+          mcsrvgrp
+          dbsrvgrp
+
+          [stack_inst:vars]
+          ansible_user=ubuntu
+          ansible_ssh_private_key_file=vprokey.pem
+          #ansible_python_interpreter=/usr/bin/python3
+
