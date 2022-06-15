@@ -1,0 +1,6 @@
+nginx_ami: ami-068257025f72f470d
+tomcat_ami: ami-068257025f72f470d
+memcache_ami: ami-068257025f72f470d
+rmq_ami: ami-068257025f72f470d
+mysql_ami: ami-068257025f72f470d
+region: ap-south-1
