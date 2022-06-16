@@ -36,6 +36,10 @@
             to_port: 22
             cidr_ip: "{{MYIP}}"
       register: BastionSG_out
+    - name:  Create variables file for bastion sg output  
+      copy:
+       content: "BastionSGid: {{BastionSG_out.group_id}}"
+       dest: vars/output_vars
 
     - name: Creating Bastion Host
       ec2:
