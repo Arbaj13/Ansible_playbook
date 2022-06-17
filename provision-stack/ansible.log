@@ -1,0 +1,17 @@
+2022-06-17 07:17:25,557 p=1382 u=ubuntu n=ansible | PLAY [Generate artifact, copy artifact & sql file to files directory] **********
+2022-06-17 07:17:25,572 p=1382 u=ubuntu n=ansible | TASK [Gathering Facts] *********************************************************
+2022-06-17 07:17:27,428 p=1382 u=ubuntu n=ansible | ok: [localhost]
+2022-06-17 07:17:27,443 p=1382 u=ubuntu n=ansible | TASK [Install  jdk, maven, git] ************************************************
+2022-06-17 07:17:34,000 p=1382 u=ubuntu n=ansible | ok: [localhost] => (item=git)
+2022-06-17 07:18:44,307 p=1382 u=ubuntu n=ansible | changed: [localhost] => (item=openjdk-8-jdk)
+2022-06-17 07:19:18,714 p=1382 u=ubuntu n=ansible | changed: [localhost] => (item=maven)
+2022-06-17 07:19:18,729 p=1382 u=ubuntu n=ansible | TASK [Clone source code from github] *******************************************
+2022-06-17 07:19:27,960 p=1382 u=ubuntu n=ansible | changed: [localhost]
+2022-06-17 07:19:27,972 p=1382 u=ubuntu n=ansible | TASK [mvn install command to build artifact] ***********************************
+2022-06-17 07:22:42,126 p=1382 u=ubuntu n=ansible | changed: [localhost]
+2022-06-17 07:22:42,151 p=1382 u=ubuntu n=ansible | TASK [Copy artifacts to files directory] ***************************************
+2022-06-17 07:22:43,370 p=1382 u=ubuntu n=ansible | changed: [localhost] => (item=/home/ubuntu/Ansible_playbook/provision-stack/Vprofile-repo/target/vprofile-v2.war)
+2022-06-17 07:22:43,381 p=1382 u=ubuntu n=ansible | TASK [Copy SQL file to files directory] ****************************************
+2022-06-17 07:22:43,814 p=1382 u=ubuntu n=ansible | changed: [localhost]
+2022-06-17 07:22:43,830 p=1382 u=ubuntu n=ansible | PLAY RECAP *********************************************************************
+2022-06-17 07:22:43,830 p=1382 u=ubuntu n=ansible | localhost                  : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
