@@ -39,7 +39,7 @@
     - name:  Create variables file for bastion sg output  
       copy:
        content: "BastionSGid: {{BastionSG_out.group_id}}"
-       dest: vars/output_vars
+       dest: vars/bastion
 
     - name: Creating Bastion Host
       ec2:
